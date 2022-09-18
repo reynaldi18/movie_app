@@ -143,7 +143,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () => vm.showMovieList(),
                       child: Row(
                         children: [
                           Text(

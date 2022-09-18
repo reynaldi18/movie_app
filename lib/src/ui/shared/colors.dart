@@ -25,4 +25,5 @@ class BaseColors {
   static const Color background = Color(0xFF1C1A29);
   static const Color black = Color(0xFF1C1A29);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color grey = Color(0xFF6F7278);
 }

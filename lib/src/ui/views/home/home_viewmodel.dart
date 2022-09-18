@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:movie_app/src/app/app.router.dart';
 import 'package:stacked/stacked.dart';
@@ -25,4 +23,6 @@ class HomeViewModel extends BaseViewModel with CoreViewModel {
     imgBanner1,
     imgBanner1,
   ];
+
+  void showMovieList() => navigationService.navigateToMovieListView();
 }

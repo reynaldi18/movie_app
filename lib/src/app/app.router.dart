@@ -12,14 +12,17 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../ui/views/main/main_view.dart';
+import '../ui/views/movie/movie_list_view.dart';
 import '../ui/views/splash_screen/splash_screen_view.dart';
 
 class Routes {
   static const String splashScreenView = '/';
   static const String mainView = '/main-view';
+  static const String movieListView = '/movie-list-view';
   static const all = <String>{
     splashScreenView,
     mainView,
+    movieListView,
   };
 }
 
@@ -29,6 +32,7 @@ class StackedRouter extends RouterBase {
   final _routes = <RouteDef>[
     RouteDef(Routes.splashScreenView, page: SplashScreenView),
     RouteDef(Routes.mainView, page: MainView),
+    RouteDef(Routes.movieListView, page: MovieListView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -42,6 +46,12 @@ class StackedRouter extends RouterBase {
     MainView: (data) {
       return CupertinoPageRoute<dynamic>(
         builder: (context) => const MainView(),
+        settings: data,
+      );
+    },
+    MovieListView: (data) {
+      return CupertinoPageRoute<dynamic>(
+        builder: (context) => const MovieListView(),
         settings: data,
       );
     },
@@ -78,6 +88,22 @@ extension NavigatorStateExtension on NavigationService {
   }) async {
     return navigateTo(
       Routes.mainView,
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
+  Future<dynamic> navigateToMovieListView({
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.movieListView,
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,
