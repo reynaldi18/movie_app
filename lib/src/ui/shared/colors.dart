@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BaseColors {
   static const MaterialColor materialPrimary = MaterialColor(
-    0xFFF47226,
+    0xFF867AD2,
     <int, Color>{
       50: Color(0xFF0E7AC7),
       100: Color(0xFF0E7AC7),

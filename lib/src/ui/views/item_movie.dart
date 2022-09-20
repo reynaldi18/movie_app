@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../../constant/config.dart';
+import '../../models/movie.dart';
 import '../shared/colors.dart';
 import '../shared/styles.dart';
 import '../shared/ui_helpers.dart';
 
 class ItemMovie extends StatelessWidget {
-  const ItemMovie({Key? key}) : super(key: key);
+  final Movie movie;
+
+  const ItemMovie({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +29,30 @@ class ItemMovie extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: 117.0,
               height: 167.0,
-              decoration: BoxDecoration(
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                color: BaseColors.grey,
+                child: Image.network(
+                  '${Config.baseImageUrl}${movie.posterPath}',
+                  fit: BoxFit.cover,
+                  loadingBuilder: (
+                    BuildContext context,
+                    Widget child,
+                    ImageChunkEvent? loadingProgress,
+                  ) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             horizontalSpace(12.0),
@@ -40,12 +65,14 @@ class ItemMovie extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Title Movie',
+                          movie.title ?? '',
                           style: whiteBoldTextStyle.copyWith(fontSize: 20.0),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         verticalSpace(12.0),
                         RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: (movie.voteAverage ?? 0.0) / 2,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
                           itemCount: 5,
@@ -61,16 +88,8 @@ class ItemMovie extends StatelessWidget {
                         ),
                         verticalSpace(12.0),
                         Text(
-                          'P-G 13+',
+                          movie.releaseDate ?? '',
                           style: whiteBoldTextStyle.copyWith(
-                            fontSize: 12.0,
-                            color: BaseColors.white.withOpacity(0.6),
-                          ),
-                        ),
-                        verticalSpace(4.0),
-                        Text(
-                          'Action, Sci-fi',
-                          style: whiteRegularTextStyle.copyWith(
                             fontSize: 12.0,
                             color: BaseColors.white.withOpacity(0.6),
                           ),

@@ -7,6 +7,7 @@ import '../../shared/colors.dart';
 import '../../shared/images.dart';
 import '../../shared/styles.dart';
 import '../../shared/ui_helpers.dart';
+import '../item_now_playing.dart';
 import 'home_viewmodel.dart';
 
 class HomeView extends StatefulWidget {
@@ -75,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
             children: [
               verticalSpace(42.0),
               SizedBox(
-                height: 163.0,
+                height: 183.0,
                 child: CarouselSlider(
                   items: vm.images
                       .map(
@@ -96,9 +97,9 @@ class _HomeViewState extends State<HomeView> {
                   carouselController: vm.controller,
                   options: CarouselOptions(
                       autoPlay: true,
-                      autoPlayInterval: const Duration(seconds: 5),
+                      autoPlayInterval: const Duration(seconds: 3),
                       enlargeCenterPage: true,
-                      height: 163.0,
+                      height: 183.0,
                       onPageChanged: (index, reason) {
                         setState(() {
                           vm.current = index;
@@ -163,7 +164,120 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ],
                 ),
-              )
+              ),
+              verticalSpace(28.0),
+              SizedBox(
+                height: 260.0,
+                child: vm.isBusy
+                    ? const Center(child: CircularProgressIndicator())
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: vm.nowPlaying?.results?.length,
+                          itemBuilder: (context, index) {
+                            var item = vm.nowPlaying?.results?[index];
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                left: index == 0 ? 20.0 : 0.0,
+                                right: 20.0,
+                              ),
+                              child: ItemNowPlaying(movie: item!),
+                            );
+                          },
+                        ),
+                      ),
+              ),
+              verticalSpace(18.0),
+              Divider(
+                color: BaseColors.white.withOpacity(0.25),
+                thickness: 1.0,
+                height: 0.0,
+              ),
+              verticalSpace(12.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'News',
+                      style: whiteBoldTextStyle.copyWith(
+                        fontSize: 24.0,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          Text(
+                            'See all',
+                            style: whiteSemiBoldTextStyle.copyWith(
+                              fontSize: 10.0,
+                              color: BaseColors.white.withOpacity(0.6),
+                            ),
+                          ),
+                          Icon(
+                            Icons.keyboard_arrow_right,
+                            size: 16.0,
+                            color: BaseColors.white.withOpacity(0.6),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              verticalSpace(28.0),
+              SizedBox(
+                height: 147.0,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: vm.images.length,
+                    itemBuilder: (context, index) {
+                      var item = vm.images[index];
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: index == 0 ? 20.0 : 0.0,
+                          right: 20.0,
+                        ),
+                        child: SizedBox(
+                          width: 255.0,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.network(
+                              item,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (
+                                  BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress,
+                                  ) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              verticalSpace(32.0),
             ],
           ),
         ),

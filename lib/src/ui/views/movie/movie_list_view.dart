@@ -96,20 +96,28 @@ class _MovieListViewState extends State<MovieListView>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return const ItemMovie();
-                    },
-                  ),
-                  Center(
-                    child: Text(
-                      'Coming Soon',
-                      style: whiteSemiBoldTextStyle,
-                    ),
-                  ),
+                  vm.fetchingNowPlaying
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: vm.nowPlaying?.results?.length,
+                          itemBuilder: (context, index) {
+                            var item = vm.nowPlaying?.results?[index];
+                            return ItemMovie(movie: item!);
+                          },
+                        ),
+                  vm.fetchingUpcoming
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: vm.upcoming?.results?.length,
+                          itemBuilder: (context, index) {
+                            var item = vm.upcoming?.results?[index];
+                            return ItemMovie(movie: item!);
+                          },
+                        ),
                 ],
               ),
             )

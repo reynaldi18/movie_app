@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../app/app.locator.dart';
+import '../network/api_service.dart';
 
 class CoreService {
+  ApiService apiService = ApiService(Dio());
   BuildContext? currentContext = StackedService.navigatorKey?.currentContext;
-  // ApiService apiService = ApiService(Dio());
+  String apiKey = "YOUR_API_KEY";
+  String language = "en-US";
   final navigationService = locator<NavigationService>();
   final snackBarService = locator<SnackbarService>();
 }

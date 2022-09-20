@@ -1,3 +1,4 @@
 class Config {
-  static const String baseUrl = "http://54.169.134.231:5000/v1/";
+  static const String baseUrl = "https://api.themoviedb.org/3/";
+  static const String baseImageUrl = "https://image.tmdb.org/t/p/w500";
 }
